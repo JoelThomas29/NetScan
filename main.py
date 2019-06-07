@@ -32,19 +32,27 @@ def target_validation(target):
         flag = False
 
         # Validating IP (Checking if entered IP is among the range of any private addresses : 10.0.0.0 - 10.255.255.255, 172.16.0.0 - 172.16.255.255, 192.168.0.0 - 192.168.255.255)
-        octect = ip.split('.')
-        if not ( (octect[0] == '10' and '0' <= octect[1] <= '255' and '0' <= octect[2] <= '255' and '0' <= octect[3] <= '255') or (octect[0] == '172' and octect[1] == '16' and '0' <= octect[2] <= '255' and '0' <= octect[3] <= '255') or (octect[0] == '192' and octect[1] == '168' and '0' <= octect[2] <= '255' and '0' <= octect[3] <= '255')):
+        try:
+            octect = ip.split('.')
+            if not ( (int(octect[0]) == 10 and 0 <= int(octect[1]) <= 255 and 0 <= int(octect[2]) <= 255 and 0 <= int(octect[3]) <= 255) or (int(octect[0]) == 172 and int(octect[1]) == 16 and 0 <= int(octect[2]) <= 255 and 0 <= int(octect[3]) <= 255) or (int(octect[0]) == 192 and int(octect[1]) == 168 and 0 <= int(octect[2]) <= 255 and 0 <= int(octect[3]) <= 255)):
+                print("[-] Invalid IP\n    Should be a private IP: 10.0.0.0 - 10.255.255.255, 172.16.0.0 - 172.16.255.255, 192.168.0.0 - 192.168.255.255")
+                flag = True
+            else:
+                pass
+        except:
             print("[-] Invalid IP\n    Should be a private IP: 10.0.0.0 - 10.255.255.255, 172.16.0.0 - 172.16.255.255, 192.168.0.0 - 192.168.255.255")
             flag = True
-        else:
-            pass
 
         # Validating prefix
-        if not '1' <= prefix <= '32':
+        try:
+            if not 1 <= int(prefix) <= 32:
+                print("[-] Invalid prefix value\n    Value should be within (1 - 32) range")
+                flag = True
+            else:
+                pass
+        except:
             print("[-] Invalid prefix value\n    Value should be within (1 - 32) range")
             flag = True
-        else:
-            pass
 
         # Deciding whether to continue program or not based on IP and prefix validation
         if flag == True:
@@ -54,7 +62,7 @@ def target_validation(target):
     except IndexError:
         print("[-] Incomplete input. Use -h or --help for more info")
         sys.exit()
-        
+
 # Checking if running as root
 root_check()
 
